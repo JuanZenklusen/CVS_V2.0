@@ -396,3 +396,19 @@ footer{
 .descripcion{
     margin-left: 20px;
 }
+
+.academic-form-duracion{
+    display: grid;
+    display: 100%;
+    gap: 5px;
+    grid-template-areas: "inicio fin";
+    grid-template-columns: 1fr 1fr;
+}
+
+.academic-form-duracion .inicio{
+    grid-area: "inicio";
+}
+
+.academic-form-duracion .fin{
+    grid-area: "fin";
+}

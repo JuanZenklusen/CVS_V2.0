@@ -150,9 +150,18 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if elemento.descripcion != "" %}
-                        <span > {{ element.descripcion }}</span> <br>
+                        {% if element.descripcion != "" %}
+                            <span > {{ element.descripcion }}</span> <br>
                         {% endif %}
+
+                        {% if element.year_inicio != "" %}
+                            <span > Año de inicio: {{ element.year_inicio }}</span>
+                        {% endif %}
+
+                        {% if element.year_fin != "" %}
+                            <span > Año de egreso: {{ element.year_fin }}</span>
+                        {% endif %}
+
                     </div>
 
                 </div>

@@ -60,15 +60,16 @@ class UpdateProfileForm(forms.ModelForm):
 
 
 class AcademicDataForm(forms.ModelForm):
-    escuela = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Institución/Universidad','class': 'form-control'}))
-    titulo = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Titulo obtenido','class': 'form-control'}))
-    #descripcion = forms.Textarea(required=False, widget=forms.TextInput(attrs={'placeholder': 'Institución/Universidad','class': 'form-control'})
-    descripcion = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Descripción', 'class': 'form-control'})
-)
+    escuela = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Institución/Universidad', 'class': 'form-control'}))
+    titulo = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Titulo obtenido', 'class': 'form-control'}))
+    descripcion = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Descripción', 'class': 'form-control'}))
+    year_inicio = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'AAAA','class': 'form-control'}))
+    year_fin = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'AAAA', 'class': 'form-control'}))
+
 
     class Meta:
         model = Academic_Data
-        fields = ['nivel', 'estado', 'escuela', 'titulo', 'descripcion']
+        fields = ['nivel', 'estado', 'escuela', 'titulo', 'descripcion', 'year_inicio', 'year_fin']
 
     def save(self, user, commit=True):
         instance = super(AcademicDataForm, self).save(commit=False)
