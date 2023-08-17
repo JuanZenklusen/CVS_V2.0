@@ -223,7 +223,6 @@ footer{
 
 .fecha-nacimiento{
     display: grid;
-    display: 100%;
     gap: 2px;
     grid-template-areas: "dd mm aaaa";
     grid-template-columns: 2fr 2fr 3fr;
@@ -254,10 +253,9 @@ footer{
 
 .telefono{
     display: grid;
-    display: 100%;
     gap: 2px;
     grid-template-areas: "cod tel";
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 2fr;
 }
 
 .cod{
@@ -270,7 +268,6 @@ footer{
 
 .container-estado-civil{
     display: grid;
-    display: 100%;
     gap: 5px;
     grid-template-areas: "estado imprime";
     grid-template-columns: 1fr 1fr;
@@ -411,4 +408,24 @@ footer{
 
 .academic-form-duracion .fin{
     grid-area: "fin";
+}
+
+.form-control-file{
+    width: 100%;
+}
+
+.container-job{
+    display: grid;
+    display: 100%;
+    gap: 5px;
+    grid-template-areas: "mm aa";
+    grid-template-columns: 1fr 2fr;
+}
+
+.month-job{
+    grid-area: "mm";
+}
+
+.year-job{
+    grid-area: "aa";
 }

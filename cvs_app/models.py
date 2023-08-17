@@ -51,6 +51,29 @@ class Academic_Data(models.Model):
     descripcion = models.CharField(max_length=250, null=True, blank=True)
     year_inicio = models.CharField(max_length=4, null=True, blank=True)
     year_fin = models.CharField(max_length=4, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     def __str__(self):
         return f'{self.escuela} - {self.nivel} - {self.estado}'
+    
+
+class Job(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    empresa = models.CharField(max_length=100, null=True, blank=True)
+    puesto = models.CharField(max_length=180, null=True, blank=True)
+    month_inicio = models.CharField(max_length=2, null=True, blank=True)
+    year_inicio = models.CharField(max_length=4, null=True, blank=True)
+    month_fin = models.CharField(max_length=2, null=True, blank=True)
+    year_fin = models.CharField(max_length=4, null=True, blank=True)
+    referencia_nombre = models.CharField(max_length=50, null=True, blank=True)
+    referencia_puesto = models.CharField(max_length=180, null=True, blank=True)
+    referencia_cod_area = models.CharField(max_length=5, null=True, blank=True)
+    referencia_telefono = models.CharField(max_length=30, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.empresa} - {self.puesto}'

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm, DateInput
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-from .models import Profile, Academic_Data
+from .models import Profile, Academic_Data, Job
 
 #este modelo de formulario es para crear un nuevo usuairo
 class RegisterForm(UserCreationForm):
@@ -60,9 +60,9 @@ class UpdateProfileForm(forms.ModelForm):
 
 
 class AcademicDataForm(forms.ModelForm):
-    escuela = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Institución/Universidad', 'class': 'form-control'}))
-    titulo = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Titulo obtenido', 'class': 'form-control'}))
-    descripcion = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Descripción', 'class': 'form-control'}))
+    escuela = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 2, 'placeholder': 'Institución/Universidad', 'class': 'form-control'}))
+    titulo = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 2, 'placeholder': 'Titulo obtenido', 'class': 'form-control'}))
+    descripcion = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Descripción', 'class': 'form-control'}))
     year_inicio = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'AAAA','class': 'form-control'}))
     year_fin = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'AAAA', 'class': 'form-control'}))
 
@@ -73,6 +73,30 @@ class AcademicDataForm(forms.ModelForm):
 
     def save(self, user, commit=True):
         instance = super(AcademicDataForm, self).save(commit=False)
+        instance.user = user
+        if commit:
+            instance.save()
+        return instance
+    
+
+class JobForm(forms.ModelForm):
+    empresa = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Empresa/Comercio/Familia', 'class': 'form-control'}))
+    puesto = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Actividad desempeñada', 'class': 'form-control'}))
+    month_inicio = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'MM', 'class': 'form-control'}))
+    year_inicio = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'AAAA', 'class': 'form-control'}))
+    month_fin = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'MM', 'class': 'form-control'}))
+    year_fin = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'AAAA', 'class': 'form-control'}))
+    referencia_nombre = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Nombre y apellido', 'class': 'form-control'}))
+    referencia_puesto = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 3, 'placeholder': 'Puesto', 'class': 'form-control'}))
+    referencia_cod_area = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Cod. área (sin cero)', 'class': 'form-control'}))
+    referencia_telefono = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': 'Teléfono (sin 15)', 'class': 'form-control'}))
+
+    class Meta:
+        model = Job
+        fields = ['empresa', 'puesto', 'month_inicio', 'year_inicio', 'month_fin', 'year_fin', 'referencia_nombre', 'referencia_puesto', 'referencia_cod_area', 'referencia_telefono']
+    
+    def save(self, user, commit=True):
+        instance = super(JobForm, self).save(commit=False)
         instance.user = user
         if commit:
             instance.save()
