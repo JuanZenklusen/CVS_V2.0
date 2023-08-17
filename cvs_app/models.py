@@ -49,6 +49,8 @@ class Academic_Data(models.Model):
     escuela = models.CharField(max_length=80, null=True, blank=True)
     titulo = models.CharField(max_length=150, null=True, blank=True)
     descripcion = models.CharField(max_length=250, null=True, blank=True)
+    year_inicio = models.CharField(max_length=4, null=True, blank=True)
+    year_fin = models.CharField(max_length=4, null=True, blank=True)
 
     def __str__(self):
         return f'{self.escuela} - {self.nivel} - {self.estado}'
