@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm, DateInput
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
-from .models import Profile, Academic_Data, Job
+from .models import Profile, Academic_Data, Job, About_Me
 
 #este modelo de formulario es para crear un nuevo usuairo
 class RegisterForm(UserCreationForm):
@@ -101,3 +101,16 @@ class JobForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+
+class About_MeForm(forms.ModelForm):
+    objetivo = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 7, 'placeholder': 'Redacte sus objetivos laborales', 'class': 'form-control'}))
+    objetivo_imp = forms.BooleanField(label='Incluir en cv', required=False,)
+    aptitudes = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 7, 'placeholder': 'Redacte sus aptitudes', 'class': 'form-control'}))
+    aptitudes_imp = forms.BooleanField(label='Incluir en cv', required=False,)
+    habilidades = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 7, 'placeholder': 'Redacte sus habilidades', 'class': 'form-control'}))
+    habilidades_imp = forms.BooleanField(label='Incluir en cv', required=False,)
+
+    class Meta:
+        model = About_Me
+        fields = ['objetivo', 'objetivo_imp', 'aptitudes', 'aptitudes_imp', 'habilidades', 'habilidades_imp']

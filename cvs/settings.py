@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'cvs.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "cvs_v2",
+        "NAME": "cvs_v3",
         "USER": os.getenv('DB_USER'),
         "PASSWORD": os.getenv('DB_PASS'),
         "HOST": "127.0.0.1",

@@ -77,3 +77,18 @@ class Job(models.Model):
 
     def __str__(self):
         return f'{self.empresa} - {self.puesto}'
+    
+
+class About_Me(models.Model):
+    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    objetivo = models.CharField(max_length=500, null=True, blank=True)
+    objetivo_imp = models.BooleanField(default=True)
+    aptitudes = models.CharField(max_length=500, null=True, blank=True)
+    aptitudes_imp = models.BooleanField(default=True)
+    habilidades = models.CharField(max_length=500, null=True, blank=True)
+    habilidades_imp = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.user

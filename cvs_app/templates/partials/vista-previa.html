@@ -82,41 +82,67 @@
             
             <hr>
 
-            <h3> OBJETIVO LABORAL </h3>
-            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut ab tenetur fugit temporibus deserunt maxime voluptatum laborum odio recusandae aliquid odit non nam esse debitis iusto error, accusamus at adipisci.</span>
+            {% if about_me.id != None %}
+                {% if about_me.objetivo_imp == True %}
+                    <h3> OBJETIVO LABORAL </h3>
+                    <span>{{ about_me.objetivo }}</span>
+                    <hr>
+                {% endif %}
+            {% endif %}
 
-            <hr>
+            {% if about_me != None %}
+                {% if about_me.aptitudes_imp == True %}
+                    <h3> APTITUDES </h3>
+                    <span>{{ about_me.aptitudes }}</span>
+                    <hr>
+                {% endif %}
+            {% endif %}
 
-            <h3> APTITUDES </h3>
-            <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo corrupti cumque ullam, est voluptas accusantium perferendis, repellat quod similique maxime ratione maiores tempora fugit ipsam minus sed assumenda provident nostrum.</span>
-
-            <hr>
-
-            <h3> HABILIDADES </h3>
-            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, aliquam exercitationem! Quod totam, error reiciendis iste nisi et, cumque sapiente odio eligendi ad, eaque cum quas amet beatae nihil consequuntur?</span>
-            <hr>
+            {% if about_me != None %}
+                {% if about_me.habilidades_imp == True %}
+                    <h3> HABILIDADES </h3>
+                    <span>{{ about_me.habilidades }}</span>
+                    <hr>
+                {% endif %} 
+            {% endif %}
 
         </div>
 
 
         <div class="cuerpo-contenido">
             <hr>
+            
 
             <div class="exp-laboral">
                 <h3>EXPERIENCIA LABORAL</h3>
                 {% for job in jobs %}
-                    <div class="job-container">
-                        <span class="etiqueta">{{ job.empresa }} | {{ job.puesto }}</span><br>
-                        <div class="descripcion">
-                            <span>Desde: {{ job.month_inicio }}</span>/<span>{{ job.year_inicio }}</span> - <span>Hasta: {{ job.month_fin }}</span>/<span>{{ job.year_fin }}</span><br>
-                            <span>Referencia: {{ job.referencia_nombre }}</span> - <span>{{ job.referencia_puesto }}</span> - Tel: <span>{{ job.referencia_cod_area }}</span>-<span>{{ job.referencia_telefono }}</span><br>
+                    
+                    <div class="cuerpo-contenido-container">
+                        <div class="texto">
+                            <div class="job-container">
+                                <span class="etiqueta">{{ job.empresa }} | {{ job.puesto }}</span><br>
+                                <div class="descripcion">
+                                    <span>Desde: {{ job.month_inicio }}</span>/<span>{{ job.year_inicio }}</span> - <span>Hasta: {{ job.month_fin }}</span>/<span>{{ job.year_fin }}</span><br>
+                                    <span>Referencia: {{ job.referencia_nombre }}</span> - <span>{{ job.referencia_puesto }}</span> - Tel: <span>{{ job.referencia_cod_area }}</span>-<span>{{ job.referencia_telefono }}</span><br>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="botones-crud">
+                            <a class="crud-editar" href="#">Editar</a>
+                            <a class="crud-eliminar" href="#">Eliminar</a>
                         </div>
                     </div>
+
+
                 {% endfor %}
             </div>
             
             
             <hr>
+
+            
+            
             
             <div class="dat-academicos">
 
@@ -140,13 +166,13 @@
                                 {% if element.titulo != "" %}
                                     <span > Título obtenido: {{ element.titulo }}</span>. <br>
                                 {% endif %}
-                            {% elif element.estado_id == 2 %}
+                            {% elif element.estado_id == 3 %}
                                 {% if element.titulo != "" %}
                                     <span > {{ element.titulo }} (Incompleto)</span>. <br>
                                 {% else %}
                                     <span > Incompleto</span>. <br>
                                 {% endif %}
-                            {% elif element.estado_id == 3 %}
+                            {% elif element.estado_id == 2 %}
                                 {% if element.titulo != "" %}
                                     <span > {{ element.titulo }} - Cursando actualmente</span>. <br>
                                 {% else %}
@@ -178,9 +204,11 @@
                 {% endfor %}
 
             </div>
-
-
+            
             <hr>
+            
+
+
 
             <div class="capacitaciones">
                 <h3>CAPACITACIONES Y CERTIFICACIONES</h3>
