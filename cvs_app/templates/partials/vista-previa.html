@@ -129,8 +129,8 @@
                         </div>
 
                         <div class="botones-crud">
-                            <a class="crud-editar" href="#">Editar</a>
-                            <a class="crud-eliminar" href="#">Eliminar</a>
+                            <a class="crud-editar" href="{% url 'update_job' id=job.id %}">Editar</a>
+                            <a class="crud-eliminar" href="{% url 'delete_job' id=job.id %}">Eliminar</a>
                         </div>
                     </div>
 

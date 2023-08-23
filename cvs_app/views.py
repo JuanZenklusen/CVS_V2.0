@@ -28,10 +28,8 @@ class RegisterView(View):
 
         if form.is_valid():
             form.save()
-
             username = form.cleaned_data.get('username')
             messages.success(request, f'Usuario creado: {username}')
-
             return redirect(to='profile')
 
         return render(request, self.template_name, {'form': form})
@@ -61,7 +59,12 @@ def profile(request):
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
-    return render(request, 'profile.html', {'user_form': user_form, 'profile_form': profile_form, 'datos_personales': datos_personales, 'academic_data': academic_data, 'jobs': jobs, 'about_me': about_me})
+    return render(request, 'profile.html', {'user_form': user_form, 
+                                            'profile_form': profile_form, 
+                                            'datos_personales': datos_personales, 
+                                            'academic_data': academic_data, 
+                                            'jobs': jobs, 
+                                            'about_me': about_me})
 
 
 @login_required
@@ -81,7 +84,11 @@ def create_academic_data(request):
     else:
         academic_form = AcademicDataForm()
     
-    return render(request, 'academic.html', {'datos_personales': datos_personales, 'academic_data': academic_data, 'jobs': jobs, 'about_me': about_me, 'academic_form': academic_form})
+    return render(request, 'academic.html', {'datos_personales': datos_personales, 
+                                             'academic_data': academic_data, 
+                                             'jobs': jobs, 
+                                             'about_me': about_me, 
+                                             'academic_form': academic_form})
 
 
 @login_required
@@ -101,7 +108,11 @@ def update_academic_data(request, id):
             return redirect('academic')
     else:
         academic_form = AcademicDataForm(instance=update_academic_data)
-    return render(request, 'academic.html', {'datos_personales': datos_personales, 'academic_data': academic_data, 'jobs': jobs, 'about_me': about_me, 'academic_form': academic_form, 'update_academic_data': update_academic_data,})
+    return render(request, 'academic.html', {'datos_personales': datos_personales, 
+                                             'academic_data': academic_data, 
+                                             'jobs': jobs, 'about_me': about_me, 
+                                             'academic_form': academic_form, 
+                                             'update_academic_data': update_academic_data,})
 
 
 @login_required
@@ -117,7 +128,11 @@ def delete_academic_data(request, id):
     if request.method == 'POST':
         delete_academic_data.delete()
         return redirect('profile')
-    return render(request, 'delete-academic.html', {'datos_personales': datos_personales, 'academic_data': academic_data, 'jobs': jobs, 'about_me': about_me, 'delete_academic_data': delete_academic_data,})
+    return render(request, 'delete-academic.html', {'datos_personales': datos_personales, 
+                                                    'academic_data': academic_data, 
+                                                    'jobs': jobs, 
+                                                    'about_me': about_me, 
+                                                    'delete_academic_data': delete_academic_data,})
 
 
 @login_required
@@ -137,7 +152,61 @@ def add_job(request):
     else:
         job_form = JobForm()
 
-    return render(request, 'jobs.html', {'datos_personales': datos_personales, 'academic_data': academic_data, 'jobs': jobs, 'about_me': about_me, 'job_form': job_form})
+    return render(request, 'jobs.html', {'datos_personales': datos_personales, 
+                                         'academic_data': academic_data, 
+                                         'jobs': jobs, 
+                                         'about_me': about_me, 
+                                         'job_form': job_form})
+
+
+
+@login_required
+def update_job(request, id):
+    #elementos comunes para todas las vistas:
+    datos_personales = get_object_or_404(Profile, user=request.user)
+    academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
+    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    about_me = get_object_or_404(About_Me, user=request.user)
+    
+    #elemento solo para esta vista:
+    update_job_data = get_object_or_404(Job, id=id)
+    if request.method == 'POST':
+        job_form = JobForm(request.POST, instance=update_job_data)
+        if job_form.is_valid():
+            job_form.save(user=request.user)
+            return redirect('add_job')
+    else:
+        job_form = JobForm(instance=update_job_data)
+
+    return render(request, 'jobs.html', {'datos_personales': datos_personales, 
+                                         'academic_data': academic_data, 
+                                         'jobs': jobs, 
+                                         'about_me': about_me, 
+                                         'job_form': job_form,
+                                         'update_job_data': update_job_data})
+
+
+
+@login_required
+def delete_job(request, id):
+    #elementos comunes para todas las vistas:
+    datos_personales = get_object_or_404(Profile, user=request.user)
+    academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
+    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    about_me = get_object_or_404(About_Me, user=request.user)
+    
+    #elemento solo para esta vista:
+    delete_job = get_object_or_404(Job, id=id)
+    if request.method == 'POST':
+        delete_job.delete()
+        return redirect('profile')
+
+    return render(request, 'delete_job.html', {'datos_personales': datos_personales, 
+                                         'academic_data': academic_data, 
+                                         'jobs': jobs, 
+                                         'about_me': about_me,
+                                         'delete_job': delete_job,})
+
 
 
 @login_required
@@ -166,7 +235,9 @@ def about_me(request):
         else:
             about_me_form = About_MeForm()
 
-    return render(request, 'about_me.html', {'datos_personales': datos_personales, 'academic_data': academic_data, 'jobs': jobs, 'about_me': about_me, 'about_me_form': about_me_form})
+    return render(request, 'about_me.html', {'datos_personales': datos_personales, 
+                                             'academic_data': academic_data, 
+                                             'jobs': jobs, 
+                                             'about_me': about_me, 
+                                             'about_me_form': about_me_form})
 
-
-#about_me = About_Me.objects.get(user=request.user)
