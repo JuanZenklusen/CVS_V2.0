@@ -7,7 +7,7 @@
         {% csrf_token %}
         <div class="formulario">
             
-            <label class="etiqueta-form">Nombre:</label>
+            <label class="etiqueta-form">Empresa/Comercio/Familia:</label>
             {{ job_form.empresa }}
 
             <label class="etiqueta-form">Puesto o actividad:</label>
@@ -32,6 +32,8 @@
             {{ job_form.year_fin }}
                 </div>
             </div>
+
+            <label class="etiqueta-form"> Trabaja actualmente? {{ job_form.trabaja_actualmente }} </label>
 
             <label class="etiqueta-form">Referencia laboral:</label>
             {{ job_form.referencia_nombre }}

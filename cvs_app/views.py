@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views import View
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, UpdateUserForm, UpdateProfileForm, AcademicDataForm, JobForm, About_MeForm
-from .models import Profile, Academic_Data, Job, About_Me
+from .forms import RegisterForm, UpdateUserForm, UpdateProfileForm, AcademicDataForm, JobForm, About_MeForm, CoursesForm
+from .models import Profile, Academic_Data, Job, About_Me, Courses
 from django.contrib.auth.models import User
 
 def index(request):
@@ -40,9 +40,9 @@ def profile(request):
     #elementos comunes para todas las vistas
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
-    #about_me = get_object_or_404(About_Me, user=request.user)
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = About_Me.objects.get(user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elementos para esta vista
     if request.method == 'POST':
@@ -63,6 +63,7 @@ def profile(request):
                                             'profile_form': profile_form, 
                                             'datos_personales': datos_personales, 
                                             'academic_data': academic_data, 
+                                            'courses': courses,
                                             'jobs': jobs, 
                                             'about_me': about_me})
 
@@ -72,8 +73,9 @@ def create_academic_data(request):
     #elementos comunes para todas las vistas
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elementos para esta vista
     if request.method == 'POST':
@@ -88,6 +90,7 @@ def create_academic_data(request):
                                              'academic_data': academic_data, 
                                              'jobs': jobs, 
                                              'about_me': about_me, 
+                                             'courses': courses,
                                              'academic_form': academic_form})
 
 
@@ -96,8 +99,9 @@ def update_academic_data(request, id):
     #elementos comunes para todas las vistas:
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elemento solo para esta vista:
     update_academic_data = get_object_or_404(Academic_Data, id=id)
@@ -111,6 +115,7 @@ def update_academic_data(request, id):
     return render(request, 'academic.html', {'datos_personales': datos_personales, 
                                              'academic_data': academic_data, 
                                              'jobs': jobs, 'about_me': about_me, 
+                                             'courses': courses,
                                              'academic_form': academic_form, 
                                              'update_academic_data': update_academic_data,})
 
@@ -120,8 +125,9 @@ def delete_academic_data(request, id):
     #elementos comunes para todas las vistas:
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elemento solo para esta vista:
     delete_academic_data = get_object_or_404(Academic_Data, id=id)
@@ -132,6 +138,7 @@ def delete_academic_data(request, id):
                                                     'academic_data': academic_data, 
                                                     'jobs': jobs, 
                                                     'about_me': about_me, 
+                                                    'courses': courses,
                                                     'delete_academic_data': delete_academic_data,})
 
 
@@ -140,8 +147,9 @@ def add_job(request):
     #elementos comunes para todas las vistas:
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elemento solo para esta vista:
     if request.method == 'POST':
@@ -156,6 +164,7 @@ def add_job(request):
                                          'academic_data': academic_data, 
                                          'jobs': jobs, 
                                          'about_me': about_me, 
+                                         'courses': courses,
                                          'job_form': job_form})
 
 
@@ -165,8 +174,9 @@ def update_job(request, id):
     #elementos comunes para todas las vistas:
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elemento solo para esta vista:
     update_job_data = get_object_or_404(Job, id=id)
@@ -182,6 +192,7 @@ def update_job(request, id):
                                          'academic_data': academic_data, 
                                          'jobs': jobs, 
                                          'about_me': about_me, 
+                                         'courses': courses,
                                          'job_form': job_form,
                                          'update_job_data': update_job_data})
 
@@ -192,8 +203,9 @@ def delete_job(request, id):
     #elementos comunes para todas las vistas:
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
     
     #elemento solo para esta vista:
     delete_job = get_object_or_404(Job, id=id)
@@ -205,6 +217,7 @@ def delete_job(request, id):
                                          'academic_data': academic_data, 
                                          'jobs': jobs, 
                                          'about_me': about_me,
+                                         'courses': courses,
                                          'delete_job': delete_job,})
 
 
@@ -214,8 +227,9 @@ def about_me(request):
     #elementos comunes para todas las vistas:
     datos_personales = get_object_or_404(Profile, user=request.user)
     academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
-    jobs = Job.objects.filter(user=request.user).order_by('-year_fin', '-month_fin', 'created_at')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
     about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
 
     #elemento solo para esta vista:
     if request.method == 'POST':
@@ -239,5 +253,59 @@ def about_me(request):
                                              'academic_data': academic_data, 
                                              'jobs': jobs, 
                                              'about_me': about_me, 
+                                             'courses': courses,
                                              'about_me_form': about_me_form})
 
+
+@login_required
+def add_course(request):
+    #elementos comunes para todas las vistas:
+    datos_personales = get_object_or_404(Profile, user=request.user)
+    academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
+    about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
+    
+    #elemento solo para esta vista:
+    if request.method == 'POST':
+        course_form = CoursesForm(request.POST)
+        if course_form.is_valid():
+            course_form.save(user=request.user)
+            return redirect('add_course')
+    else:
+        course_form = CoursesForm()
+
+    return render(request, 'courses.html', {'datos_personales': datos_personales,
+                                             'academic_data': academic_data,
+                                             'jobs': jobs,
+                                             'about_me': about_me,
+                                             'courses': courses,
+                                             'course_form': course_form})
+
+
+@login_required
+def course_update(request, id):
+    #elementos comunes para todas las vistas:
+    datos_personales = get_object_or_404(Profile, user=request.user)
+    academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
+    about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
+
+    #elemento solo para esta vista:
+    update_course = get_object_or_404(Courses, id=id)
+    if request.method == 'POST':
+        course_form = CoursesForm(request.POST, instance=update_course)
+        if course_form.is_valid():
+            course_form.save(user=request.user)
+            return redirect('add_course')
+    else:
+        course_form = CoursesForm(instance=update_course)
+
+    return render(request, 'courses.html', {'datos_personales': datos_personales,
+                                             'academic_data': academic_data,
+                                             'jobs': jobs,
+                                             'about_me': about_me,
+                                             'courses': courses,
+                                             'update_course': update_course,
+                                             'course_form': course_form})

@@ -22,9 +22,9 @@ class Profile(models.Model):
     cantidad_hijos = models.CharField(max_length=10, null=True, blank=True, default="0")
     imprime_cantidad_hijos = models.BooleanField(default=True)
     editar_cv = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     def __str__(self):
         return self.user.username
@@ -36,11 +36,13 @@ class Academic_Level(models.Model):
     def __str__(self):
         return self.level
     
+
 class Status(models.Model):
     status = models.CharField(max_length=50, null=False, blank=False)
 
     def __str__(self):
         return self.status
+
 
 class Academic_Data(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -51,6 +53,7 @@ class Academic_Data(models.Model):
     descripcion = models.CharField(max_length=250, null=True, blank=True)
     year_inicio = models.CharField(max_length=4, null=True, blank=True)
     year_fin = models.CharField(max_length=4, null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
@@ -60,7 +63,6 @@ class Academic_Data(models.Model):
 
 class Job(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
     empresa = models.CharField(max_length=100, null=True, blank=True)
     puesto = models.CharField(max_length=180, null=True, blank=True)
     month_inicio = models.CharField(max_length=2, null=True, blank=True)
@@ -71,6 +73,7 @@ class Job(models.Model):
     referencia_puesto = models.CharField(max_length=180, null=True, blank=True)
     referencia_cod_area = models.CharField(max_length=5, null=True, blank=True)
     referencia_telefono = models.CharField(max_length=30, null=True, blank=True)
+    trabaja_actualmente = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,9 +83,7 @@ class Job(models.Model):
     
 
 class About_Me(models.Model):
-    #user = models.ForeignKey(User, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     objetivo = models.CharField(max_length=500, null=True, blank=True)
     objetivo_imp = models.BooleanField(default=True)
     aptitudes = models.CharField(max_length=500, null=True, blank=True)
@@ -90,5 +91,22 @@ class About_Me(models.Model):
     habilidades = models.CharField(max_length=500, null=True, blank=True)
     habilidades_imp = models.BooleanField(default=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.user
+    
+
+class Courses(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre_curso = models.CharField(max_length=100, null=False, blank=False)
+    institucion = models.CharField(max_length=100, null=False, blank=False)
+    duracion = models.CharField(max_length=30, null=True, blank=True)
+    year_egreso = models.CharField(max_length=4, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.nombre_curso} - Usuario: {self.user}'
