@@ -309,3 +309,26 @@ def course_update(request, id):
                                              'courses': courses,
                                              'update_course': update_course,
                                              'course_form': course_form})
+
+
+@login_required
+def course_delete(request, id):
+    #elementos comunes para todas las vistas:
+    datos_personales = get_object_or_404(Profile, user=request.user)
+    academic_data = Academic_Data.objects.filter(user=request.user).order_by('-nivel_id', 'estado_id')
+    jobs = Job.objects.filter(user=request.user).order_by('-trabaja_actualmente', '-year_fin', '-month_fin', 'created_at')
+    about_me = get_object_or_404(About_Me, user=request.user)
+    courses = Courses.objects.filter(user=request.user).order_by('-year_egreso')
+
+    #elemento solo para esta vista:
+    delete_course = get_object_or_404(Courses, id=id)
+    if request.method == 'POST':
+        delete_course.delete()
+        return redirect('add_course')
+
+    return render(request, 'delete_course.html', {'datos_personales': datos_personales,
+                                             'academic_data': academic_data,
+                                             'jobs': jobs,
+                                             'about_me': about_me,
+                                             'courses': courses,
+                                             'delete_course': delete_course,})

@@ -43,7 +43,7 @@
         </div>
         <div class="botones-crud">
             <a class="crud-editar" href="{% url 'course_update' id=course.id %}">Editar</a>
-            <a class="crud-eliminar" href="#">Eliminar</a>
+            <a class="crud-eliminar" href="{% url 'course_delete' id=course.id %}">Eliminar</a>
         </div>
     </div>
     {% endfor %}
