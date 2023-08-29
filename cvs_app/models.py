@@ -91,8 +91,8 @@ class About_Me(models.Model):
     habilidades = models.CharField(max_length=500, null=True, blank=True)
     habilidades_imp = models.BooleanField(default=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True,)
+    updated_at = models.DateTimeField(auto_now=True, null=True,)
 
     def __str__(self):
         return self.user
